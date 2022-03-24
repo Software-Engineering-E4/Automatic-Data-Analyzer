@@ -1,5 +1,4 @@
 # Automatic-Data-Analyzer
--
 TEAM:
   - Andra Atomei Gabriela
   - Blana Andrei Claudiu
