@@ -1,4 +1,5 @@
-//nlpPipeline.java
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.ling.CoreAnnotations;
@@ -10,15 +11,20 @@ import edu.stanford.nlp.trees.Tree;
 import edu.stanford.nlp.util.CoreMap;
 
 public class NLP {
+
     static StanfordCoreNLP pipeline;
+
     public static void init()
     {
         Properties props = new Properties();
         props.setProperty("annotators", "tokenize, ssplit, parse, sentiment");
         pipeline = new StanfordCoreNLP(props);
     }
-    public static void estimatingSentiment(String text)
+
+    public static List<Double> estimatingSentiment(String text)
     {
+        List<Double> sentimentList = new ArrayList<>();
+
         int sentimentInt;
         String sentimentName;
         Annotation annotation = pipeline.process(text);
@@ -46,8 +52,9 @@ public class NLP {
             System.out.println(sentimentName + "\t" + sentimentInt + "\t" + sentence);
         }
 
-        System.out.println( "\n\nProcent text negativ: " + ( lengthNegative * 100 / length ) );
-        System.out.println( "Procent text neutru: " + ( lengthNeutral * 100 / length ) );
-        System.out.println( "Procent text pozitiv: " + ( lengthPositive * 100 / length ) );
+        sentimentList.add(lengthNegative * 100 / length);
+        sentimentList.add(lengthNeutral * 100 / length);
+        sentimentList.add(lengthPositive * 100 / length);
+        return sentimentList;
     }
 }
