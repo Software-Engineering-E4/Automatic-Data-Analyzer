@@ -49,7 +49,7 @@ public class NLP {
             }
             length += sentence.toString().length();
 
-            System.out.println(sentimentName + "\t" + sentimentInt + "\t" + sentence);
+            //System.out.println(sentimentName + "\t" + sentimentInt + "\t" + sentence);
         }
 
         sentimentList.add(lengthNegative * 100 / length);
