@@ -6,3 +6,5 @@ TEAM:
   - Iacob Andrei
   - Manoli Oxana
   - Onofrei Erika Andreea
+
+https://trello.com/b/iOamYjRa/automatic-da
