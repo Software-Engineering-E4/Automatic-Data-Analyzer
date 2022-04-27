@@ -26,9 +26,9 @@ public class RedditPostsDAO {
                 Tool.format(sentimentList);
 
                 PreparedStatement statement = con.prepareStatement("UPDATE reddit_posts SET negative = ?, neutral = ?, positive = ? WHERE id = ?");
-                statement.setString(1,sentimentList.get(0).toString());
-                statement.setString(2,sentimentList.get(1).toString());
-                statement.setString(3,sentimentList.get(2).toString());
+                statement.setDouble(1,sentimentList.get(0));
+                statement.setDouble(2,sentimentList.get(1));
+                statement.setDouble(3,sentimentList.get(2));
                 statement.setString(4,id);
                 System.out.println(statement);
             }
