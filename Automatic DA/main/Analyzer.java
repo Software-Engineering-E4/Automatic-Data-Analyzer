@@ -1,7 +1,5 @@
 package main;
-import dao.RedditPostsDAO;
-import dao.TwitterPostsDAO;
-import dao.YouTubePostsDAO;
+import dao.*;
 import database.Database;
 import stanford.NLP;
 

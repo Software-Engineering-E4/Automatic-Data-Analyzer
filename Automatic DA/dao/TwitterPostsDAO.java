@@ -14,7 +14,7 @@ public class TwitterPostsDAO {
         try {
             Connection con = Database.getConnection();
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(" SELECT * FROM twitter_posts LIMIT 5");
+            ResultSet rs = stmt.executeQuery(" SELECT * FROM twitter_posts WHERE sentiment is NULL");
 
             while (rs.next()) {
                 String id = rs.getString("id");
@@ -38,6 +38,8 @@ public class TwitterPostsDAO {
                 statement.setString(1,predominantSentiment);
                 statement.setString(2,id);
                 System.out.println(statement);
+                statement.executeUpdate();
+                statement.close();
             }
         } catch (SQLException e){
             e.printStackTrace();

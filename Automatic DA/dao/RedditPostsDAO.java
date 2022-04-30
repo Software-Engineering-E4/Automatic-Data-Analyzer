@@ -16,11 +16,17 @@ public class RedditPostsDAO {
         try {
             Connection con = Database.getConnection();
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(" SELECT * FROM reddit_posts LIMIT 5");
+            ResultSet rs = stmt.executeQuery(" SELECT * FROM reddit_posts where neutral IS NULL");
 
             while (rs.next()) {
                 String id = rs.getString("id");
                 String selfText = rs.getString("selftext");
+                String title = rs.getString("title");
+
+                if( selfText.isEmpty() ) {
+                    selfText = title;
+                }
+
 
                 List<Double> sentimentList = NLP.estimatingSentiment(selfText);  // poz 0 - % negative sentiment | poz 1 - % neutral sentiment | poz 2 - % positive sentiment
                 Tool.format(sentimentList);
@@ -31,6 +37,8 @@ public class RedditPostsDAO {
                 statement.setDouble(3,sentimentList.get(2));
                 statement.setString(4,id);
                 System.out.println(statement);
+                statement.executeUpdate();
+                statement.close();
             }
         } catch (SQLException e){
             e.printStackTrace();
