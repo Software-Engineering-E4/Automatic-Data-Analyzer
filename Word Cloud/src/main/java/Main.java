@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class Main {
+
     public static void main(String[] args) throws IOException {
 
         StopWordRemoval stpRemove = new StopWordRemoval();
@@ -23,15 +24,15 @@ public class Main {
 
         final FrequencyAnalyzer frequencyAnalyzer = new FrequencyAnalyzer();
         frequencyAnalyzer.setWordFrequenciesToReturn(500);
-        frequencyAnalyzer.setMinWordLength(4);
+        frequencyAnalyzer.setMinWordLength(2);
         final List<WordFrequency> wordFrequencies = frequencyAnalyzer.load("words.txt");
         final Dimension dimension = new Dimension(600, 600);
         final WordCloud wordCloud = new WordCloud(dimension, CollisionMode.PIXEL_PERFECT);
         wordCloud.setPadding(2);
         wordCloud.setBackground(new CircleBackground(300));
-        // colors followed by and steps between
+        //colors followed by and steps between
         wordCloud.setColorPalette(new LinearGradientColorPalette(Color.RED, Color.BLUE, Color.GREEN, 30, 30));
-        wordCloud.setFontScalar( new SqrtFontScalar(10, 40));
+        wordCloud.setFontScalar( new SqrtFontScalar(10, 30));
         wordCloud.build(wordFrequencies);
         wordCloud.writeToFile("C:\\Users\\Andra\\Desktop\\wordCloud.png");
 

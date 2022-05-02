@@ -1,24 +1,27 @@
+import edu.stanford.nlp.ling.CoreLabel;
+import edu.stanford.nlp.pipeline.CoreDocument;
+import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 
 import java.io.*;
 import java.util.*;
 
-public class StopWordRemoval  {
+public class StopWordRemoval {
 
-    String[] stopWords = { "a", "about", "above", "across", "actually", "after", "again",
+    String[] stopWords = {"a", "about", "above", "across", "actually", "after", "again",
             "against", "all", "almost", "alone", "along", "already", "also",
             "although", "always", "among", "an", "and", "another", "any",
-            "anybody", "anyone", "anything", "anywhere", "are", "area",
+            "anybody", "anyone", "anything", "anywhere", "are", "aren", "area",
             "areas", "around", "as", "ask", "asked", "asking", "asks", "at",
             "away", "b", "back", "backed", "backing", "backs", "be", "became",
             "because", "become", "becomes", "been", "before", "began",
             "behind", "being", "beings", "best", "better", "between", "big",
             "both", "but", "by", "c", "came", "can", "cannot", "case", "cases",
             "certain", "certainly", "clear", "clearly", "come", "could", "d",
-            "did", "differ", "different", "differently", "do", "don't", "does", "done",
+            "did", "differ", "different", "differently", "do", "don", "does", "done",
             "down", "down", "downed", "downing", "downs", "during", "e",
             "each", "early", "either", "end", "ended", "ending", "ends",
             "enough", "even", "evenly", "ever", "every", "everybody",
-            "everyone", "everything", "everywhere", "f", "face", "faces",
+            "everyone", "everything", "everywhere", "else", "f", "face", "faces",
             "fact", "facts", "far", "felt", "few", "find", "finds", "first",
             "for", "four", "from", "full", "fully", "further", "furthered",
             "furthering", "furthers", "g", "gave", "general", "generally",
@@ -28,11 +31,11 @@ public class StopWordRemoval  {
             "her", "here", "herself", "high", "high", "high", "higher",
             "highest", "him", "himself", "his", "how", "however", "i", "I", "I'm", "if",
             "important", "in", "interest", "interested", "interesting",
-            "interests", "into", "is", "it", "its", "it's", "itself", "j", "just", "k",
+            "interests", "into", "is", "isn", "it", "its", "it's", "itself", "j", "just", "k",
             "keep", "keeps", "kind", "knew", "know", "known", "knows", "l",
             "large", "largely", "last", "later", "latest", "least", "less",
             "let", "lets", "like", "likely", "long", "longer", "longest", "m",
-            "made", "make", "making", "man", "many", "may", "me", "member",
+            "made", "make", "making", "man", "many", "may", "maybe", "me", "member",
             "members", "men", "might", "more", "most", "mostly", "mr", "mrs",
             "much", "must", "my", "myself", "n", "necessary", "need", "needed",
             "needing", "needs", "never", "new", "new", "newer", "newest",
@@ -57,16 +60,16 @@ public class StopWordRemoval  {
             "thought", "thoughts", "three", "through", "thus", "to", "today",
             "together", "too", "took", "toward", "turn", "turned", "turning",
             "turns", "two", "u", "under", "until", "up", "upon", "us", "use",
-            "used", "uses", "v", "very", "w", "want", "wanted", "wanting",
+            "used", "uses", "v", "'ve", "very", "w", "want", "wanted", "wanting",
             "wants", "was", "way", "ways", "we", "well", "wells", "went",
             "were", "what", "when", "where", "whether", "which", "while",
             "who", "whole", "whose", "why", "will", "with", "within",
             "without", "work", "worked", "working", "works", "would", "x", "y",
             "year", "years", "yet", "you", "young", "younger", "youngest",
-            "your", "yours", "z", "s", "re"};
+            "your", "yours", "z", "'s", "'re", "!", "?", ",", ".", ";", ":", "--"};
 
     ArrayList<String> wordsList = new ArrayList<>();
-    String str = "Cancer is a scary word. Almost everyone knows someone who got very sick or died from cancer. Most of the time, cancer affects " +
+    String text = "Cancer is a scary word. Almost everyone knows someone who got very sick or died from cancer. Most of the time, cancer affects " +
             "older people. Not many kids get cancer, but when they do, very often it can be treated and cured. Cancer is actually a group of many " +
             "related diseases that all have to do with cells. Cells are the very small units that make up all living things, including the human " +
             "body. There are billions of cells in each person's body. Cancer happens when cells that are not normal grow and spread very fast. " +
@@ -85,15 +88,28 @@ public class StopWordRemoval  {
             "likely to get cancer when you become an adult.";
 
     public void removeStopWord() {
-        System.out.println("Before trim:  " + str);
-        String[] words = str.toLowerCase().split("[ '.,:;-]");
-        Collections.addAll(wordsList, words);
-        HashSet<String> wordWithStopWord = new HashSet<>(wordsList);
+
+        StanfordCoreNLP stanfordCoreNLP = Pipeline.getPipeline();
+
+        CoreDocument coreDocument = new CoreDocument(text);
+
+        stanfordCoreNLP.annotate(coreDocument);
+
+        List<CoreLabel> coreLabelList = coreDocument.tokens();
+
+        HashSet<String> words = new HashSet<>(wordsList);
         HashSet<String> StopWordsSet = new HashSet<>(Arrays.asList(stopWords));
-        wordWithStopWord.removeAll(StopWordsSet);
-        System.out.println(wordWithStopWord);
+
+        for(CoreLabel coreLabel : coreLabelList) {
+            String lemma = coreLabel.lemma();
+            words.add(lemma);
+        }
+
+        words.removeAll(StopWordsSet);
+
         try (FileWriter file = new FileWriter("words.txt")) {
-            file.write(String.valueOf(wordWithStopWord));
+            for(String word : words)
+                file.write(word + " ");
             file.flush();
         }
         catch (IOException e) {
