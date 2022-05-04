@@ -14,7 +14,7 @@ public class YouTubePostsDAO {
         try {
             Connection con = Database.getConnection();
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(" SELECT * FROM youtube_videos WHERE sentiment IS NULL ");
+            ResultSet rs = stmt.executeQuery(" SELECT * FROM youtube_videos WHERE sentiment = 'null'");
 
             while (rs.next()) {
                 String id = rs.getString("id");
@@ -38,7 +38,7 @@ public class YouTubePostsDAO {
                 statement.setString(1,predominantSentiment);
                 statement.setString(2,id);
                 System.out.println(statement);
-                statement.executeUpdate();
+                //statement.executeUpdate();
                 statement.close();
             }
         } catch (SQLException e){

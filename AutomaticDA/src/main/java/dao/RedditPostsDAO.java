@@ -33,7 +33,7 @@ public class RedditPostsDAO {
                 statement.setDouble(3,sentimentList.get(2));
                 statement.setString(4,id);
                 System.out.println(statement);
-                statement.executeUpdate();
+                //statement.executeUpdate();
                 statement.close();
             }
         } catch (SQLException e){

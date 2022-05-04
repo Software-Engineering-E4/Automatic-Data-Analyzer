@@ -38,7 +38,7 @@ public class TwitterPostsDAO {
                 statement.setString(1,predominantSentiment);
                 statement.setString(2,id);
                 System.out.println(statement);
-                statement.executeUpdate();
+                //statement.executeUpdate();
                 statement.close();
             }
         } catch (SQLException e){
