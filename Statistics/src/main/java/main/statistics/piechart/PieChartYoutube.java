@@ -20,25 +20,15 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class PieChartYoutube extends Application  {
+public class PieChartYoutube {
 
-    @Override
-    public void start(Stage stage) throws SQLException {
-
-        Database.createConnection();
+    public static PieChart pieChartYoutube() throws SQLException {
 
         YoutubeVideo youtubeVideo = new YoutubeVideo();
 
         Integer negative = youtubeVideo.getNegativePost();
         Integer positive = youtubeVideo.getPositivePost();
         Integer neutral = youtubeVideo.getNeutralPost();
-
-
-        Scene scene = new Scene(new Group());
-        stage.setTitle("YouTube Posts");
-        stage.setWidth(500);
-        stage.setHeight(500);
-
 
         ObservableList<PieChart.Data> pieChartData =
                 FXCollections.observableArrayList(
@@ -47,30 +37,9 @@ public class PieChartYoutube extends Application  {
                         new PieChart.Data("Positive", positive));
 
         final PieChart chart = new PieChart(pieChartData);
-        chart.setTitle("YouTube Posts Statistics");
+        chart.setTitle("YouTube Videos Statistics");
 
-        ((Group) scene.getRoot()).getChildren().add(chart);
-        stage.setScene(scene);
-        stage.show();
-        WritableImage image = chart.snapshot(new SnapshotParameters(), null);
-        File file = new File("C:\\Users\\Barna\\Desktop\\ip\\Statistics\\Statistics\\src\\main\\resources\\PieChartYoutube.png");
-
-        if (file.delete()) {
-            System.out.println("Deleted");
-        }
-        try {
-            ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-
-
-    public static void main(String[] args) throws SQLException {
-       launch(args);
-
+        return chart;
     }
 
 }

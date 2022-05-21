@@ -1,31 +1,20 @@
 package main.statistics.linechart;
 
-
-import database.Database;
-import javafx.application.Application;
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.Scene;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
-import javafx.scene.image.WritableImage;
-import javafx.stage.Stage;
 import youtube.YoutubeVideo;
 
-import javax.imageio.ImageIO;
-import java.io.File;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
-public class LineChartYoutube extends Application {
-    @Override
-    public void start(Stage stage) throws SQLException {
-        Database.createConnection();
+public class LineChartYoutube  {
+
+    public static LineChart<String,Number> lineChartYoutube() throws SQLException {
+
         YoutubeVideo youtubeVideo = new YoutubeVideo();
 
         Double[] neutral = new Double[9];
@@ -96,28 +85,10 @@ public class LineChartYoutube extends Application {
         series3.getData().add(new XYChart.Data("Jan-Apr 2022", positive[6]));
         series3.getData().add(new XYChart.Data("May-Aug 2022", positive[7]));
 
-
-        Scene scene = new Scene(lineChart, 1100, 800);
         lineChart.getData().addAll(series1, series2, series3);
 
-        stage.setScene(scene);
-        stage.show();
-        WritableImage image = lineChart.snapshot(new SnapshotParameters(), null);
-        File file = new File("C:\\Users\\Barna\\Desktop\\ip\\Statistics\\Statistics\\src\\main\\resources\\LineChartYoutube.png");
-
-        if (file.delete()) {
-            System.out.println("Deleted");
-        }
-        try {
-            ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        return lineChart;
     }
 
-
-    public static void main(String[] args) {
-        launch(args);
-    }
 
 }

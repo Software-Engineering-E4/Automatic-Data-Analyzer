@@ -1,31 +1,21 @@
 package main.statistics.barchart;
 
-import database.Database;
-import javafx.application.Application;
+
 import javafx.collections.FXCollections;
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.image.WritableImage;
-import javafx.stage.Stage;
-import reddit.RedditPosts;
 import youtube.YoutubeVideo;
 
-import javax.imageio.ImageIO;
-import java.io.File;
-import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
-public class BarChartYoutube extends Application {
-    @Override
-    public void start(Stage stage) throws Exception {
-        Database.createConnection();
+public class BarChartYoutube  {
+
+    public static BarChart<String,Number> barChartYoutube() throws SQLException {
+
         YoutubeVideo youtubeVideo = new YoutubeVideo();
 
         Double[] neutral = new Double[9];
@@ -54,7 +44,7 @@ public class BarChartYoutube extends Application {
 
         CategoryAxis xAxis = new CategoryAxis();
 
-        xAxis.setCategories(FXCollections.<String>observableArrayList(Arrays.asList(
+        xAxis.setCategories(FXCollections.observableArrayList(Arrays.asList(
                 "Jan-Apr 2020", "May-Aug 2020", "Sept-Dec 2020", "Jan-Apr 2021", "May-Aug 2021", "Sept-Dec 2021", "Jan-Apr 2022", "May-Aug 2022")));
         xAxis.setLabel("Month-Year");
 
@@ -109,28 +99,7 @@ public class BarChartYoutube extends Application {
         barChart.setMinWidth(800);
         barChart.setMaxWidth(800);
 
-        Group root = new Group(barChart);
-
-        Scene scene = new Scene(root, 800, 600);
-
-        stage.setTitle("Barchart YouTube");
-
-
-        stage.setScene(scene);
-        stage.show();
-        WritableImage image = barChart.snapshot(new SnapshotParameters(), null);
-        File file = new File("C:\\Users\\Barna\\Desktop\\ip\\Statistics\\Statistics\\src\\main\\resources\\BarChartYouTube.png");
-        if (file.delete()) {
-            System.out.println("Deleted");
-        }
-        try {
-            ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        return barChart;
     }
 
-    public static void main(String args[]) {
-        launch(args);
-    }
 }

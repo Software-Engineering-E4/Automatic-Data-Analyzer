@@ -1,30 +1,22 @@
 package main.statistics.barchart;
 
 import database.Database;
-import javafx.application.Application;
 import javafx.collections.FXCollections;
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.image.WritableImage;
-import javafx.stage.Stage;
+
 import reddit.RedditPosts;
 
-import javax.imageio.ImageIO;
-import java.io.File;
-import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
-public class BarChartRedditPosts extends Application {
-    @Override
-    public void start(Stage stage) throws Exception {
-        Database.createConnection();
+public class BarChartRedditPosts {
+
+    public static BarChart<String, Number> barChartRedditPosts() throws SQLException {
+
         RedditPosts redditPosts = new RedditPosts();
 
         Double[] neutral = new Double[9];
@@ -108,28 +100,8 @@ public class BarChartRedditPosts extends Application {
         barChart.setMinWidth(800);
         barChart.setMaxWidth(800);
 
-        Group root = new Group(barChart);
-
-        Scene scene = new Scene(root, 800, 600);
-
-        stage.setTitle("Barchart Reddit");
-
-
-        stage.setScene(scene);
-        stage.show();
-        WritableImage image = barChart.snapshot(new SnapshotParameters(), null);
-        File file = new File("C:\\Users\\Barna\\Desktop\\ip\\Statistics\\Statistics\\src\\main\\resources\\BarChartRedditPost.png");
-        if (file.delete()) {
-            System.out.println("Deleted");
-        }
-        try {
-            ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        return barChart;
     }
 
-    public static void main(String args[]) {
-        launch(args);
-    }
+
 }

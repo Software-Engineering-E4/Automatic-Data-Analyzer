@@ -20,25 +20,15 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class PieChartTwitterPosts extends Application {
+public class PieChartTwitterPosts  {
 
-    @Override
-    public void start(Stage stage) throws SQLException {
-
-        Database.createConnection();
+    public static PieChart pieChartTwitterPosts() throws SQLException {
 
         TwitterPosts twitterPosts = new TwitterPosts();
 
         Integer negative = twitterPosts.getNegativePost();
         Integer positive = twitterPosts.getPositivePost();
         Integer neutral = twitterPosts.getNeutralPost();
-
-
-        Scene scene = new Scene(new Group());
-        stage.setTitle("Twitter Posts");
-        stage.setWidth(500);
-        stage.setHeight(500);
-
 
         ObservableList<PieChart.Data> pieChartData =
                 FXCollections.observableArrayList(
@@ -49,24 +39,9 @@ public class PieChartTwitterPosts extends Application {
         final PieChart chart = new PieChart(pieChartData);
         chart.setTitle("Twitter Posts Statistics");
 
-        ((Group) scene.getRoot()).getChildren().add(chart);
-        stage.setScene(scene);
-        stage.show();
-        WritableImage image = chart.snapshot(new SnapshotParameters(), null);
-        File file = new File("C:\\Users\\Barna\\Desktop\\ip\\Statistics\\Statistics\\src\\main\\resources\\PieChartTwitter.png");
-
-        if (file.delete()) {
-            System.out.println("Deleted");
-        }
-        try {
-            ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        return chart;
     }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+
 }
 
