@@ -53,4 +53,43 @@ public class RedditPosts {
         }
     }
 
+    public Double findNeutralPostByMonthAndYear(String month1, String month2,int year)throws SQLException{
+
+        try (Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery("select avg(t.neutru) from (\n"
+                    + "select avg(neutral) as neutru\n"
+                     + "from reddit_posts\n"
+                    + "where DATE_FORMAT(created_utc, '%m') BETWEEN '" + month1 + "' and '" + month2 + "' and DATE_FORMAT(created_utc, '%Y') = " + year +"\n"
+                    + "group by DATE_FORMAT(created_utc, '%m %Y')\n"
+                     +"ORDER BY DATE_FORMAT(created_utc, '%Y %m') ASC ) t")){
+            return rs.next() ? rs.getDouble(1) : null;
+        }
+    }
+
+    public Double findPositivePostByMonthAndYear(String month1, String month2,int year)throws SQLException{
+
+        try (Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery("select avg(t.positiv) from (\n"
+                     + "select avg(positive) as positiv\n"
+                     + "from reddit_posts\n"
+                     + "where DATE_FORMAT(created_utc, '%m') BETWEEN '" + month1 + "' and '" + month2 + "' and DATE_FORMAT(created_utc, '%Y') = " + year +"\n"
+                     + "group by DATE_FORMAT(created_utc, '%m %Y')\n"
+                     +"ORDER BY DATE_FORMAT(created_utc, '%Y %m') ASC ) t")){
+            return rs.next() ? rs.getDouble(1) : null;
+        }
+    }
+
+    public Double findNegativePostByMonthAndYear(String month1, String month2,int year)throws SQLException{
+
+        try (Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery("select avg(t.negativ) from (\n"
+                     + "select avg(negative) as negativ\n"
+                     + "from reddit_posts\n"
+                     + "where DATE_FORMAT(created_utc, '%m') BETWEEN '" + month1 + "' and '" + month2 + "' and DATE_FORMAT(created_utc, '%Y') = " + year +"\n"
+                     + "group by DATE_FORMAT(created_utc, '%m %Y')\n"
+                     +"ORDER BY DATE_FORMAT(created_utc, '%Y %m') ASC ) t")){
+            return rs.next() ? rs.getDouble(1) : null;
+        }
+    }
+
 }
